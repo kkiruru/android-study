@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.main
+package com.kkiruru.android.ui.main
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -9,8 +9,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.example.myapplication.R
+import com.kkiruru.android.ui.R
 
 class MainFragment : Fragment() {
 
@@ -26,9 +27,9 @@ class MainFragment : Fragment() {
     ): View {
         var value =  inflater.inflate(R.layout.fragment_main, container, false)
 
-        var message = value?.findViewById(R.id.message)
+        var message = value?.findViewById<TextView>(R.id.message)
 
-        message.text = foo("가나다", R.color.purple_200).append(foo("다라바", R.color.teal_700))
+        message?.text = foo("가나다", R.color.purple_200).append(foo("다라바", R.color.teal_700))
 
         return value
     }
