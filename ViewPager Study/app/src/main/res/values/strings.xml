@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">안드로이드연습</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="hello_example">Hello blank fragment</string>
+    <string name="hello_example2">hello_example2 blank fragment</string>
+
+
+</resources>
