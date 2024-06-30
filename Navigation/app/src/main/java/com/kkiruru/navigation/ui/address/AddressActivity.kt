@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +22,10 @@ import androidx.navigation.compose.rememberNavController
 
 
 class AddressActivity : ComponentActivity() {
+
+    private val viewModel by viewModels<AddressViewModel>()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,8 +43,11 @@ class AddressActivity : ComponentActivity() {
             AddressDestinations.SETTING_ROUTE
         }
         else {
-            "search/$isSearchOnly"
+            AddressDestinations.SEARCH_ROUTE
         }
+
+        viewModel.initSearchMode(isSearchOnly)
+
 
         setContent {
             val navController = rememberNavController()
@@ -50,7 +58,9 @@ class AddressActivity : ComponentActivity() {
                 ) {
                     AddressApp(
                         navController = navController,
-                        route = startDestination)
+                        route = startDestination,
+                        viewModel = viewModel
+                    )
                 }
             }
         }
@@ -102,6 +112,7 @@ class AddressActivity : ComponentActivity() {
 fun AddressApp(
     navController: NavHostController,
     route: String,
+    viewModel: AddressViewModel,
 ) {
     Scaffold(
 
@@ -116,7 +127,7 @@ fun AddressApp(
                 )
             )
         ) {
-            AddressNavigation(navController = navController, route = route)
+            AddressNavigation(navController = navController, route = route, viewModel = viewModel)
         }
     }
 }

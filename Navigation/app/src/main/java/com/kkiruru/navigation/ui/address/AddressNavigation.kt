@@ -2,6 +2,7 @@ package com.kkiruru.navigation.ui.address
 
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -22,12 +23,12 @@ object AddressDestinationsArgs {
 }
 
 object AddressDestinations {
-    const val SEARCH_ROUTE = "$SEARCH_SCREEN/{$SEARCH_ONLY_MODE}"
+    const val SEARCH_ROUTE = SEARCH_SCREEN
     const val SETTING_ROUTE = SETTING_SCREEN
 }
 
 @Composable
-fun AddressNavigation(navController: NavHostController, route: String) {
+fun AddressNavigation(navController: NavHostController, route: String, viewModel: AddressViewModel, ) {
     Log.e("AddressNavigation", "route ${route}")
 
     NavHost(navController, startDestination = route) {
@@ -37,22 +38,19 @@ fun AddressNavigation(navController: NavHostController, route: String) {
                 type = NavType.BoolType; defaultValue = false
             }),
         ) {
-            backStackEntry ->
-            Log.e("SearchScreen", "SearchScreen ${backStackEntry.arguments}")
-
-            val isSearchOnly = backStackEntry.arguments?.getBoolean(SEARCH_ONLY_MODE) ?: false
+            val isSearchOnly = viewModel.isSearchOnlyMode.collectAsState()
             SearchScreen(
-                isSearchOnly,
                 gotoSettings = {
                     navController.navigateToSettingScreen()
-                }
+                },
+                isSearchOnly = isSearchOnly.value,
             )
         }
         composable(
             route = AddressDestinations.SETTING_ROUTE
         ) {
             SettingScreen(
-                gotoSearch = { isSearchOnly ->
+                gotoSearch = {
                     navController.navigateToSearchScreen()
                 }
             )

@@ -57,11 +57,14 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.material3)
+
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui.tooling.preview.android)
+    implementation(libs.androidx.lifecycle.viewmodel.savedstate)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
