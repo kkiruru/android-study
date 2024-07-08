@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.kkiruru.navigation.ui.address.AddressDestinationsArgs.SEARCH_ONLY_MODE
 import com.kkiruru.navigation.ui.address.AddressScreens.SEARCH_SCREEN
@@ -28,10 +29,14 @@ object AddressDestinations {
 }
 
 @Composable
-fun AddressNavigation(navController: NavHostController, route: String, viewModel: AddressViewModel, ) {
-    Log.e("AddressNavigation", "route ${route}")
+fun AddressNavigation(
+    navController: NavHostController = rememberNavController(),
+    startDestination: String,
+    viewModel: AddressViewModel,
+) {
+    Log.e("AddressNavigation", "route ${startDestination}")
 
-    NavHost(navController, startDestination = route) {
+    NavHost(navController, startDestination = startDestination) {
         composable(
             route = AddressDestinations.SEARCH_ROUTE,
             arguments = listOf(navArgument(SEARCH_ONLY_MODE) {
