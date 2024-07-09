@@ -1,4 +1,4 @@
-package com.kkiruru.dialogexample.ui.theme
+package com.kkiruru.example.dialog.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

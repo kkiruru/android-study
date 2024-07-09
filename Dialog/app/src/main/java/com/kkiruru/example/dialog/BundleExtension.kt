@@ -1,4 +1,4 @@
-package com.kkiruru.dialogexample
+package com.kkiruru.example.dialog
 
 import android.content.Intent
 import android.os.Build

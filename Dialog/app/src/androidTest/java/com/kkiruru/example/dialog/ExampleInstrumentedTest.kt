@@ -1,4 +1,4 @@
-package com.kkiruru.dialogexample
+package com.kkiruru.example.dialog
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

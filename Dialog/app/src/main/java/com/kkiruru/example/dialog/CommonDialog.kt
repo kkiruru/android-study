@@ -1,4 +1,4 @@
-package com.kkiruru.dialogexample
+package com.kkiruru.example.dialog
 
 import android.app.Activity
 import android.content.Context
@@ -9,9 +9,7 @@ import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +22,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.setFragmentResult
-import com.kkiruru.dialogexample.databinding.DialogCommonBinding
+import com.kkiruru.example.dialog.databinding.DialogCommonBinding
 import java.io.Serializable
 
 class CommonDialog : DialogFragment() {

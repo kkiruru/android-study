@@ -1,4 +1,4 @@
-package com.kkiruru.dialogexample
+package com.kkiruru.example.dialog
 
 import android.content.Intent
 import android.os.Bundle
@@ -30,7 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.FragmentResultListener
-import com.kkiruru.dialogexample.ui.theme.DialogExampleTheme
+import com.kkiruru.example.dialog.ui.theme.DialogExampleTheme
 
 class MainActivity : AppCompatActivity(), FragmentResultListener {
     override fun onCreate(savedInstanceState: Bundle?) {

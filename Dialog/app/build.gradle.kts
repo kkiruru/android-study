@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.kkiruru.dialogexample"
+    namespace = "com.kkiruru.example.dialog"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.kkiruru.dialogexample"
+        applicationId = "com.kkiruru.example.dialog"
         minSdk = 29
         targetSdk = 34
         versionCode = 1

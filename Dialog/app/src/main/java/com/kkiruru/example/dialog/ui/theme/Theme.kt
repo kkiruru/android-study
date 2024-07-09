@@ -1,6 +1,5 @@
-package com.kkiruru.dialogexample.ui.theme
+package com.kkiruru.example.dialog.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

@@ -1,4 +1,4 @@
-package com.kkiruru.dialogexample
+package com.kkiruru.example.dialog
 
 import android.os.Bundle
 import android.widget.TextView
@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.kkiruru.dialogexample.MainActivity.Companion.DIALOG_KEY_UPDATE
 
 class DialogActivity : AppCompatActivity() {
 
