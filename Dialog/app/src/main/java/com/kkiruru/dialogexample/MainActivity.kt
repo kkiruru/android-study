@@ -1,5 +1,6 @@
 package com.kkiruru.dialogexample
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -31,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.FragmentResultListener
 import com.kkiruru.dialogexample.ui.theme.DialogExampleTheme
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FragmentResultListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.e("MainActivity", "onCreate")
@@ -63,17 +64,18 @@ class MainActivity : AppCompatActivity() {
                                 CommonDialog.showDialog(
                                     this,
                                     popupDialogState = CommonDialogState(
-                                        tag = "update",
+                                        tag = DIALOG_KEY_UPDATE,
                                         title = "새로운 버전이 출시되었습니다",
                                         cancelable = false,
-                                        popupButton = PopupButton.Pair(
-                                            left = PopupButton.Pair.Left(
+                                        button = DialogButton.Pair(
+                                            left = DialogButton.Pair.Left(
                                                 "취소",
                                             ),
-                                            right = PopupButton.Pair.Right(
+                                            right = DialogButton.Pair.Right(
                                                 "바로 업데이트",
                                             )
-                                        )
+                                        ),
+                                        recovery = true
                                     )
                                 )
                             },
@@ -81,13 +83,18 @@ class MainActivity : AppCompatActivity() {
                                 CommonDialog.showDialog(
                                     this,
                                     popupDialogState = CommonDialogState(
-                                        tag = "test",
+                                        tag = DIALOG_KEY_TEST,
                                         title = "테스트 Dialog",
                                         cancelable = true,
-                                        popupButton = PopupButton.Single.Default(
+                                        button = DialogButton.Single.Default(
                                             name = "취소",
                                         ),
                                     )
+                                )
+                            },
+                            onDialogActivity = {
+                                startActivity(
+                                    Intent(this@MainActivity, DialogActivity::class.java)
                                 )
                             }
                         )
@@ -101,40 +108,17 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         Log.e("MainActivity", "onResume")
 
-        FragmentResultListener { _, bundle ->
-            when(bundle.customSerializable<PopupButton>("result")) {
-                is PopupButton.Pair.Left -> {
-                    Toast.makeText(this, "왼쪽", Toast.LENGTH_SHORT).show()
-                }
-                is PopupButton.Pair.Right -> {
-                    Toast.makeText(this, "오른쪽", Toast.LENGTH_SHORT).show()
-                }
-                else -> {}
-            }
-        }.also {
-            Log.e("CommonDialog", "setFragmentResultListener를 설정하다 ")
-            supportFragmentManager.setFragmentResultListener(
-                "update",
-                this,
-                it
-            )
-        }
+        supportFragmentManager.setFragmentResultListener(
+            DIALOG_KEY_UPDATE,
+            this,
+            this@MainActivity
+        )
 
-        FragmentResultListener { _, bundle ->
-            when(bundle.customSerializable<PopupButton>("result")) {
-                is PopupButton.Single.Default -> {
-                    Toast.makeText(this, "테스트 완료", Toast.LENGTH_SHORT).show()
-                }
-                else -> {}
-            }
-        }.also {
-            Log.e("CommonDialog", "setFragmentResultListener를 설정하다 ")
-            supportFragmentManager.setFragmentResultListener(
-                "test",
-                this,
-                it
-            )
-        }
+        supportFragmentManager.setFragmentResultListener(
+            DIALOG_KEY_TEST,
+            this,
+            this@MainActivity
+        )
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -157,6 +141,48 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         Log.e("MainActivity", "onDestroy")
     }
+
+    override fun onFragmentResult(requestKey: String, bundle: Bundle) {
+        when(requestKey) {
+            DIALOG_KEY_UPDATE -> {
+                when(bundle.customSerializable<DialogResult>(CommonDialog.RESULT)) {
+                    is DialogResult.Left -> {
+                        Toast.makeText(this, "왼쪽 1", Toast.LENGTH_SHORT).show()
+                    }
+                    is DialogResult.Right -> {
+                        Toast.makeText(this, "오른쪽 2", Toast.LENGTH_SHORT).show()
+                    }
+
+                    DialogResult.Cancel -> {
+                        Toast.makeText(this, "취소됨", Toast.LENGTH_SHORT).show()
+                    }
+
+                    else -> {}
+                }
+            }
+
+            DIALOG_KEY_TEST -> {
+                when(bundle.customSerializable<DialogResult>(CommonDialog.RESULT)) {
+                    is DialogResult.Default -> {
+                        Toast.makeText(this, "테스트 완료 3", Toast.LENGTH_SHORT).show()
+                    }
+
+                    DialogResult.Cancel -> {
+                        Toast.makeText(this, "취소됨", Toast.LENGTH_SHORT).show()
+                    }
+
+                    else -> {}
+                }
+            }
+
+            else -> {}
+        }
+    }
+
+    companion object {
+        const val DIALOG_KEY_UPDATE = "update"
+        const val DIALOG_KEY_TEST = "test"
+    }
 }
 
 
@@ -165,6 +191,7 @@ fun MainApp(
     modifier: Modifier,
     onUpdateDialog: () -> Unit,
     onTestDialog: () -> Unit,
+    onDialogActivity: () -> Unit,
 ) {
     Box(
         modifier = modifier,
@@ -190,6 +217,13 @@ fun MainApp(
                 onTestDialog.invoke()
             }) {
                 Text(text = "test Dialog")
+            }
+
+
+            Button(onClick = {
+                onDialogActivity.invoke()
+            }) {
+                Text(text = "Dialog Activity")
             }
 
         }
@@ -228,6 +262,7 @@ private fun MainPreview() {
                     .padding(innerPadding),
                 onUpdateDialog = {},
                 onTestDialog = {},
+                onDialogActivity = {},
             )
         }
     }

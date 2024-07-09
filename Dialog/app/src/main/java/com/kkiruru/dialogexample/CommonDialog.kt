@@ -9,7 +9,9 @@ import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +29,7 @@ import java.io.Serializable
 
 class CommonDialog : DialogFragment() {
     private lateinit var binding: DialogCommonBinding
+    private lateinit var state : CommonDialogState
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,37 +50,42 @@ class CommonDialog : DialogFragment() {
         val foo = this.requireActivity() as FragmentActivity
         foo.supportFragmentManager.toString()
 
-
-
-
-
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
         return binding.root
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putBundle("state", arguments)
-        super.onSaveInstanceState(outState)
-
-        Log.e("CommonDialog", "onSaveInstanceState  ${outState}")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         Log.e("CommonDialog", "onViewCreated  savedInstanceState ${savedInstanceState}")
+        Log.e("CommonDialog", "___ savedInstanceState  ${savedInstanceState?.customSerializable<CommonDialogState>("state")}")
         Log.e("CommonDialog", "___ arguments  ${arguments}")
 
-        val bundle = arguments ?: savedInstanceState
+        val bar = savedInstanceState?.customSerializable<CommonDialogState>("state")
+        Log.e("CommonDialog", "___ bar  ${bar}")
 
-        val state = bundle?.customSerializable<CommonDialogState>("state") ?:  CommonDialogState(
+        val foo = arguments?.customSerializable<CommonDialogState>("state")
+        Log.e("CommonDialog", "___ foo  ${foo}")
+
+        state = (arguments?.customSerializable<CommonDialogState>("state") ?: savedInstanceState?.getBundle("state") ?: CommonDialogState(
             tag = "",
             title = "에러",
-            popupButton = PopupButton.Single.Default(
+            button = DialogButton.Single.Default(
                 "닫기"
             )
-        )
+        )) as CommonDialogState
+
+        if (savedInstanceState != null && state.recovery.not()) {
+            dismiss()
+            return
+        }
+
+        if (state.recovery) {
+            if (this.requireActivity() !is FragmentResultListener) {
+                throw RuntimeException("recovery need FragmentResultListener implement")
+            }
+        }
 
         if (state.title.isNullOrEmpty()) {
             binding.title.visibility = View.GONE
@@ -93,39 +101,39 @@ class CommonDialog : DialogFragment() {
             binding.content.text = state.content
         }
 
-        if (state.popupButton is PopupButton.Single) {
+        if (state.button is DialogButton.Single) {
             binding.singleButton.visibility = View.VISIBLE
             binding.multiButtonContainer.visibility = View.GONE
 
-            binding.singleButton.text = (state.popupButton as PopupButton.Single.Default).name
+            binding.singleButton.text = (state.button as DialogButton.Single.Default).name
 
             binding.singleButton.setOnClickListener {
                 setFragmentResult(state.tag,
                     bundleOf(
-                        "result" to state.popupButton
+                        "result" to DialogResult.Default
                     )
                 )
                 dismiss()
             }
-        } else {
+        } else if (state.button is DialogButton.Pair) {
             binding.singleButton.visibility = View.GONE
             binding.multiButtonContainer.visibility = View.VISIBLE
 
-            binding.multiButtonLeft.text = (state.popupButton as PopupButton.Pair).left.name
+            binding.multiButtonLeft.text = (state.button as DialogButton.Pair).left.name
             binding.multiButtonLeft.setOnClickListener {
                 setFragmentResult(state.tag,
                     bundleOf(
-                        "result" to state.popupButton.left
+                        "result" to DialogResult.Left
                     )
                 )
                 dismiss()
             }
 
-            binding.multiButtonRight.text = (state.popupButton as PopupButton.Pair).right.name
+            binding.multiButtonRight.text = (state.button as DialogButton.Pair).right.name
             binding.multiButtonRight.setOnClickListener {
                 setFragmentResult(state.tag,
                     bundleOf(
-                        "result" to state.popupButton.right
+                        "result" to DialogResult.Right
                     )
                 )
                 dismiss()
@@ -133,13 +141,35 @@ class CommonDialog : DialogFragment() {
         }
 
         this.isCancelable = state.cancelable
+        setLayoutWidth()
+    }
+
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        Log.e("CommonDialog", "onViewStateRestored ${savedInstanceState}")
     }
 
     override fun onResume() {
         super.onResume()
         Log.e("CommonDialog", "onResume")
 
-        setLayoutWidth()
+    }
+
+    override fun onCancel(dialog: DialogInterface) {
+        super.onCancel(dialog)
+        Log.e("CommonDialog", "onCancel")
+
+        setFragmentResult(state.tag,
+            bundleOf(
+                "result" to DialogResult.Cancel
+            )
+        )
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        Log.e("CommonDialog", "onDismiss")
     }
 
     override fun onPause() {
@@ -150,9 +180,11 @@ class CommonDialog : DialogFragment() {
         }
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        Log.e("CommonDialog", "onViewStateRestored ${savedInstanceState}")
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putSerializable("state", state)
+        super.onSaveInstanceState(outState)
+
+        Log.e("CommonDialog", "onSaveInstanceState  ${outState}")
     }
 
     override fun onDestroy() {
@@ -160,21 +192,12 @@ class CommonDialog : DialogFragment() {
         Log.e("CommonDialog", "onDestroy")
     }
 
-    override fun onCancel(dialog: DialogInterface) {
-        super.onCancel(dialog)
-        Log.e("CommonDialog", "onCancel")
-    }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        Log.e("CommonDialog", "onDismiss")
-    }
-
     private fun setLayoutWidth() {
         val deviceWidth = activity?.let { getScreenWidth(it) }
+
         if (deviceWidth != null) {
             val params = dialog?.window?.attributes
-            params?.width = 300.dpToPixel.coerceAtMost((deviceWidth * 0.86).toInt())
+            params?.width = 320.dpToPixel.coerceAtMost((deviceWidth * 0.86).toInt())
             dialog?.window?.attributes = params as WindowManager.LayoutParams
         }
     }
@@ -201,6 +224,8 @@ class CommonDialog : DialogFragment() {
     }
 
     companion object {
+        const val RESULT = "result"
+
         fun newInstance(
             popupDialogState: CommonDialogState,
         ): CommonDialog {
@@ -217,8 +242,16 @@ class CommonDialog : DialogFragment() {
         fun showDialog(
             fragmentActivity: FragmentActivity,
             popupDialogState: CommonDialogState,
+            resultListener: FragmentResultListener? = null,
         ): CommonDialog {
             val dialog = newInstance(popupDialogState)
+            resultListener?.also {
+                fragmentActivity?.supportFragmentManager?.setFragmentResultListener(
+                    popupDialogState.tag,
+                    fragmentActivity,
+                    resultListener
+                )
+            }
             dialog.show(fragmentActivity.supportFragmentManager, popupDialogState.tag)
             return dialog
         }
@@ -226,16 +259,18 @@ class CommonDialog : DialogFragment() {
 }
 
 
+
 data class CommonDialogState(
     val tag: String,
     val title: String? = null,
     val content: String? = null,
-    val popupButton: PopupButton,
+    val button: DialogButton,
     val cancelable: Boolean = true,
+    val recovery: Boolean = false,
 ) : Serializable
 
-sealed class PopupButton : Serializable {
-    sealed class Single : PopupButton(), Serializable {
+sealed class DialogButton : Serializable {
+    sealed class Single : DialogButton(), Serializable {
         data class Default(
             val name: String,
         ) : Single(), Serializable
@@ -244,7 +279,7 @@ sealed class PopupButton : Serializable {
     data class Pair(
         val left: Left,
         val right: Right,
-    ) : PopupButton(), Serializable {
+    ) : DialogButton(), Serializable {
         data class Left(
             val name: String,
         ) : Single(), Serializable
@@ -255,8 +290,27 @@ sealed class PopupButton : Serializable {
 }
 
 
+sealed class DialogResult : Serializable {
+    data object Default : DialogResult(), Serializable {
+        private fun readResolve(): Any = Default
+    }
+
+    data object Left : DialogResult(), Serializable {
+        private fun readResolve(): Any = Left
+    }
+
+    data object Right : DialogResult(), Serializable {
+        private fun readResolve(): Any = Right
+    }
+
+    data object Cancel : DialogResult(), Serializable {
+        private fun readResolve(): Any = Cancel
+    }
+
+    data object Dismiss : DialogResult(), Serializable {
+        private fun readResolve(): Any = Dismiss
+    }
+}
+
 val Int.dpToPixel: Int
     get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
-
-
-
