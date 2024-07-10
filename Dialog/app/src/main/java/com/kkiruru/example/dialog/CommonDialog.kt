@@ -1,20 +1,15 @@
 package com.kkiruru.example.dialog
 
-import android.app.Activity
-import android.content.Context
 import android.content.DialogInterface
 import android.content.res.Resources
 import android.graphics.Color
-import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
@@ -50,6 +45,7 @@ class CommonDialog : DialogFragment() {
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+
         return binding.root
     }
 
@@ -139,6 +135,7 @@ class CommonDialog : DialogFragment() {
         }
 
         this.isCancelable = state.cancelable
+
         setLayoutWidth()
     }
 
@@ -191,34 +188,9 @@ class CommonDialog : DialogFragment() {
     }
 
     private fun setLayoutWidth() {
-        val deviceWidth = activity?.let { getScreenWidth(it) }
-
-        if (deviceWidth != null) {
-            val params = dialog?.window?.attributes
-            params?.width = 320.dpToPixel.coerceAtMost((deviceWidth * 0.86).toInt())
-            dialog?.window?.attributes = params as WindowManager.LayoutParams
-        }
-    }
-
-    private fun getScreenWidth(activity: Activity): Int {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val windowMetrics =
-                (activity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics
-            val windowInsets: WindowInsets = windowMetrics.windowInsets
-            val insets = windowInsets.getInsetsIgnoringVisibility(
-                WindowInsets.Type.navigationBars() or WindowInsets.Type.displayCutout()
-            )
-            val insetsWidth = insets.right + insets.left
-            val bound = windowMetrics.bounds
-            bound.width() - insetsWidth
-        } else {
-            @Suppress("DEPRECATION")
-            val display = activity.windowManager.defaultDisplay
-            val size = Point()
-            @Suppress("DEPRECATION")
-            display.getSize(size)
-            size.x
-        }
+        val params = dialog?.window?.attributes
+        params?.width = 320.dpToPixel.coerceAtMost((Resources.getSystem().displayMetrics.widthPixels * 0.85).toInt())
+        dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
 
     companion object {

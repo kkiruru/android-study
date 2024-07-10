@@ -147,10 +147,10 @@ class MainActivity : AppCompatActivity(), FragmentResultListener {
             DIALOG_KEY_UPDATE -> {
                 when(bundle.customSerializable<DialogResult>(CommonDialog.RESULT)) {
                     is DialogResult.Left -> {
-                        Toast.makeText(this, "왼쪽 1", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "왼쪽 버튼", Toast.LENGTH_SHORT).show()
                     }
                     is DialogResult.Right -> {
-                        Toast.makeText(this, "오른쪽 2", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "오른쪽 버튼", Toast.LENGTH_SHORT).show()
                     }
 
                     DialogResult.Cancel -> {
@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity(), FragmentResultListener {
             DIALOG_KEY_TEST -> {
                 when(bundle.customSerializable<DialogResult>(CommonDialog.RESULT)) {
                     is DialogResult.Default -> {
-                        Toast.makeText(this, "테스트 완료 3", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "기본버튼", Toast.LENGTH_SHORT).show()
                     }
 
                     DialogResult.Cancel -> {
