@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.setFragmentResult
 import com.kkiruru.example.dialog.databinding.DialogCommonBinding
 import java.io.Serializable
+
 
 class CommonDialog : DialogFragment() {
     private lateinit var binding: DialogCommonBinding
@@ -48,6 +50,7 @@ class CommonDialog : DialogFragment() {
 
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -134,8 +137,8 @@ class CommonDialog : DialogFragment() {
             }
         }
 
-        this.isCancelable = state.cancelable
-
+        this.isCancelable = false
+        dialog?.setCanceledOnTouchOutside(state.cancelable)
         setLayoutWidth()
     }
 
@@ -148,6 +151,27 @@ class CommonDialog : DialogFragment() {
     override fun onResume() {
         super.onResume()
         Log.e("CommonDialog", "onResume")
+
+        dialog?.setOnKeyListener { _, keyCode, event ->
+            if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+                //This is the filter
+
+                Log.e("CommonDialog", "keyCode == KeyEvent.KEYCODE_BACK ${event.action}")
+                if (event.action != KeyEvent.ACTION_DOWN) {
+                    true
+                } else {
+                    //Hide your keyboard here!!!!!!
+
+                    if (state.cancelable) {
+//                        dismissAllowingStateLoss()
+                        dialog?.cancel()
+                    }
+                    true // pretend we've processed it
+                }
+            } else {
+                false
+            } // pass on to be processed as normal
+        }
 
     }
 
@@ -170,9 +194,7 @@ class CommonDialog : DialogFragment() {
     override fun onPause() {
         super.onPause()
         Log.e("CommonDialog", "onPause")
-        if (this.isCancelable) {
-            dialog?.cancel()
-        }
+        dismiss()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

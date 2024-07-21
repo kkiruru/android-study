@@ -66,7 +66,8 @@ class MainActivity : AppCompatActivity(), FragmentResultListener {
                                     popupDialogState = CommonDialogState(
                                         tag = DIALOG_KEY_UPDATE,
                                         title = "새로운 버전이 출시되었습니다",
-                                        cancelable = false,
+                                        content = "팝업을 계속 유지합니다",
+                                        cancelable = true,
                                         button = DialogButton.Pair(
                                             left = DialogButton.Pair.Left(
                                                 "취소",
@@ -85,7 +86,7 @@ class MainActivity : AppCompatActivity(), FragmentResultListener {
                                     popupDialogState = CommonDialogState(
                                         tag = DIALOG_KEY_TEST,
                                         title = "테스트 Dialog",
-                                        cancelable = true,
+                                        content = "팝업을 유지 하지 않습니다.",
                                         button = DialogButton.Single.Default(
                                             name = "취소",
                                         ),
