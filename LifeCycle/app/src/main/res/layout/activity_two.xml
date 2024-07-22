@@ -5,8 +5,7 @@
     android:id="@+id/second"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.SecondFragment">
-
+    tools:context=".TwoActivity">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -20,30 +19,19 @@
 
         <TextView
             android:id="@+id/message"
+            android:textSize="20dp"
+            android:textColor="#FFFF2121"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Second Fragment" />
+            android:text="TwoActivity" />
 
         <Button
-            android:id="@+id/moveToMain"
+            android:id="@+id/moveToThree"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginTop="50dp"
-            android:text="move To Main 1" />
+            android:text="move To Three" />
 
-        <Button
-            android:id="@+id/moveToMainClearTop"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginTop="50dp"
-            android:text="move To Main_ClearTop 1" />
-
-        <Button
-            android:id="@+id/moveToThird"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginTop="50dp"
-            android:text="move To Third" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -13,9 +13,6 @@
         android:theme="@style/Theme.LifeCycle"
         tools:targetApi="31">
         <activity
-            android:name=".ui.ThirdActivity"
-            android:exported="false" />
-        <activity
             android:name=".IntroActivity"
             android:exported="true"
             android:label="@string/app_name"
@@ -32,9 +29,26 @@
             android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
+            android:name=".ui.ThirdActivity"
+            android:exported="false" />
+        <activity
             android:name=".SecondActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".OneActivity"
+            android:launchMode="singleTask"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".TwoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ThreeActivity"
+            android:launchMode="singleTop"
+            android:exported="false" />
+
     </application>
 
 </manifest>

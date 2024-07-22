@@ -24,7 +24,7 @@ class IntroActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             delay(500L)
-            MainActivity.startMainWithClearTop(this@IntroActivity, "fromIntro")
+            MainActivity.startMain(this@IntroActivity, "fromIntro")
             finish()
         }
     }
