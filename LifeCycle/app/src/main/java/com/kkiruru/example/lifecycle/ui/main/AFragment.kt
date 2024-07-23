@@ -10,24 +10,23 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.kkiruru.example.lifecycle.MainActivity
-import com.kkiruru.example.lifecycle.SecondActivity
-import com.kkiruru.example.lifecycle.databinding.FragmentSecondBinding
-import com.kkiruru.example.lifecycle.ui.ThirdActivity
+import com.kkiruru.example.lifecycle.databinding.FragmentABinding
+import com.kkiruru.example.lifecycle.ui.BActivity
 
-class SecondFragment : Fragment() {
+class AFragment : Fragment() {
 
-    private var _binding: FragmentSecondBinding? = null
+    private var _binding: FragmentABinding? = null
     private val binding get() = _binding!!
 
     companion object {
-        fun newInstance() = SecondFragment()
+        fun newInstance() = AFragment()
     }
 
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.e("SecondFragment", "onCreate")
+        Log.e("BFragment", "onCreate")
 
         // TODO: Use the ViewModel
     }
@@ -36,8 +35,8 @@ class SecondFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.e("SecondFragment", "onCreateView")
-        _binding = FragmentSecondBinding.inflate(inflater, container, false)
+        Log.e("BFragment", "onCreateView")
+        _binding = FragmentABinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         binding.moveToMain.setOnClickListener {
@@ -48,9 +47,9 @@ class SecondFragment : Fragment() {
             MainActivity.startMainWithClearTop(requireContext(), "fromSecond")
         }
 
-        binding.moveToThird.setOnClickListener {
+        binding.moveToB.setOnClickListener {
             startActivity(
-                Intent(requireContext(), ThirdActivity::class.java)
+                Intent(requireContext(), BActivity::class.java)
             )
         }
 
@@ -60,36 +59,36 @@ class SecondFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.e("SecondFragment", "onDestroyView")
+        Log.e("BFragment", "onDestroyView")
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        Log.e("SecondFragment", "onAttach")
+        Log.e("BFragment", "onAttach")
     }
 
     override fun onStart() {
         super.onStart()
-        Log.e("SecondFragment", "onStart")
+        Log.e("BFragment", "onStart")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.e("SecondFragment", "onResume")
+        Log.e("BFragment", "onResume")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.e("SecondFragment", "onPause")
+        Log.e("BFragment", "onPause")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.e("SecondFragment", "onStop")
+        Log.e("BFragment", "onStop")
     }
 
     override fun onDetach() {
         super.onDetach()
-        Log.e("SecondFragment", "onDetach")
+        Log.e("BFragment", "onDetach")
     }
 }

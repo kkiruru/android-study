@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
                                 modifier = Modifier,
                                 onClick = {
                                     startActivity(
-                                        Intent(this@MainActivity, SecondActivity::class.java)
+                                        Intent(this@MainActivity, AActivity::class.java)
                                     )
                                 }
                             ) {
