@@ -24,9 +24,12 @@ class ThreeActivity : ComponentActivity() {
         setContentView(binding.root)
 
         binding.startOne.setOnClickListener {
-            startActivity(
-                Intent(this@ThreeActivity, OneActivity::class.java)
-            )
+            val intent = Intent(this@ThreeActivity, OneActivity::class.java).apply {
+//                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//                addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            }
+            startActivity(intent)
         }
 
         binding.startTwo.setOnClickListener {

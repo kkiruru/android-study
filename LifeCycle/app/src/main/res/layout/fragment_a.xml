@@ -5,7 +5,7 @@
     android:id="@+id/second"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.AFragment">
+    tools:context=".AFragment">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -44,6 +44,13 @@
             android:layout_marginTop="50dp"
             android:text="move to B">
         </Button>
+
+        <Button
+            android:id="@+id/moveToOne"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:text="move To One" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,10 @@
 package com.kkiruru.example.lifecycle
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.kkiruru.example.lifecycle.ui.main.AFragment
 
 class AActivity : AppCompatActivity() {
 
@@ -26,5 +27,14 @@ class AActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Log.e("AActivity", "onDestroy")
+    }
+
+
+    companion object {
+        fun startActivity(context: Context) {
+            val intent = Intent(context, AActivity::class.java).apply {
+            }
+            context.startActivity(intent)
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.kkiruru.example.lifecycle
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
@@ -24,7 +25,7 @@ class IntroActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             delay(500L)
-            MainActivity.startMain(this@IntroActivity, "fromIntro")
+            MainActivity.startActivity(this@IntroActivity, "from Intro")
             finish()
         }
     }

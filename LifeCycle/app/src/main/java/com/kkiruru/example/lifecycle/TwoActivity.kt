@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
+import com.kkiruru.example.lifecycle.MainActivity.Companion
 import com.kkiruru.example.lifecycle.databinding.ActivityTwoBinding
 
 class TwoActivity : ComponentActivity() {
@@ -28,6 +29,28 @@ class TwoActivity : ComponentActivity() {
             ThreeActivity.startActivity(this, "from Two")
         }
 
+        binding.moveToMain.setOnClickListener {
+//            val intent = Intent(this, MainActivity::class.java).apply {
+//                setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//                addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+//            }
+//            startActivity(intent)
+            MainActivity.startActivity(this@TwoActivity, "from Two")
+        }
+
+        binding.moveToA.setOnClickListener {
+            val intent = Intent(this, AActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            startActivity(intent)
+        }
+
+        binding.moveToOne.setOnClickListener {
+            val intent = Intent(this, OneActivity::class.java).apply {
+//                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            startActivity(intent)
+        }
     }
 
     override fun onNewIntent(intent: Intent) {

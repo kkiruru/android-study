@@ -19,25 +19,26 @@
             android:theme="@style/Theme.LifeCycle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false"
-            android:launchMode="singleTask"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".ui.BActivity"
-            android:exported="false" />
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+        </activity>
+
         <activity
             android:name=".AActivity"
+            android:launchMode="singleTask"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity
+            android:name=".BActivity"
+            android:exported="false" />
         <activity
             android:name=".OneActivity"
-            android:launchMode="singleTask"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
@@ -46,7 +47,6 @@
             android:exported="false" />
         <activity
             android:name=".ThreeActivity"
-            android:launchMode="singleTop"
             android:exported="false" />
 
     </application>

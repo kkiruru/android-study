@@ -33,6 +33,27 @@
             android:text="move To Three" />
 
 
+        <Button
+            android:id="@+id/moveToMain"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:text="move To Main" />
+
+        <Button
+            android:id="@+id/moveToA"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:text="move To A" />
+
+        <Button
+            android:id="@+id/moveToOne"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:text="move To One" />
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 

@@ -26,14 +26,17 @@
             android:text="OneActivity" />
 
         <Button
+            android:id="@+id/moveToMain"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:text="move To Main" />
+
+        <Button
             android:id="@+id/moveToTwo"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginTop="50dp"
             android:text="move To Two" />
-
-
     </androidx.appcompat.widget.LinearLayoutCompat>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

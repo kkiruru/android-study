@@ -21,6 +21,10 @@ class OneActivity : ComponentActivity() {
         _binding = ActivityOneBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.moveToMain.setOnClickListener {
+            MainActivity.startActivity(this, "from One")
+        }
+
         binding.moveToTwo.setOnClickListener {
             TwoActivity.startActivity(this, "from One")
         }
@@ -84,8 +88,22 @@ class OneActivity : ComponentActivity() {
 
     companion object {
         private const val INTENT_KEY_TEST = "INTENT_KEY_TEST"
+        fun startActivityNewTask(context: Context) {
+            val intent = Intent(context, OneActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+                putExtras(
+                    Bundle().apply {
+                        putString(INTENT_KEY_TEST, "addressEntryMode")
+                    }
+                )
+            }
+            context.startActivity(intent)
+        }
+
         fun startActivity(context: Context) {
             val intent = Intent(context, OneActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 putExtras(
                     Bundle().apply {
                         putString(INTENT_KEY_TEST, "addressEntryMode")

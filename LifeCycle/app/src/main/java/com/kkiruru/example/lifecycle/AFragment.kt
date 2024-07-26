@@ -1,4 +1,4 @@
-package com.kkiruru.example.lifecycle.ui.main
+package com.kkiruru.example.lifecycle
 
 import android.content.Context
 import android.content.Intent
@@ -9,9 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.kkiruru.example.lifecycle.MainActivity
 import com.kkiruru.example.lifecycle.databinding.FragmentABinding
-import com.kkiruru.example.lifecycle.ui.BActivity
+import com.kkiruru.example.lifecycle.ui.main.MainViewModel
 
 class AFragment : Fragment() {
 
@@ -26,7 +25,7 @@ class AFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.e("BFragment", "onCreate")
+        Log.e("AFragment", "onCreate")
 
         // TODO: Use the ViewModel
     }
@@ -35,12 +34,16 @@ class AFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.e("BFragment", "onCreateView")
+        Log.e("AFragment", "onCreateView")
         _binding = FragmentABinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         binding.moveToMain.setOnClickListener {
-            MainActivity.startMain(requireContext(), "fromSecond")
+//            MainActivity.startMain(requireContext(), "fromSecond")
+            val intent = Intent(context, MainActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            requireContext().startActivity(intent)
         }
 
         binding.moveToMainClearTop.setOnClickListener {
@@ -53,42 +56,46 @@ class AFragment : Fragment() {
             )
         }
 
+        binding.moveToOne.setOnClickListener {
+            OneActivity.startActivity(requireContext())
+        }
+
         return root
     }
 
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.e("BFragment", "onDestroyView")
+        Log.e("AFragment", "onDestroyView")
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        Log.e("BFragment", "onAttach")
+        Log.e("AFragment", "onAttach")
     }
 
     override fun onStart() {
         super.onStart()
-        Log.e("BFragment", "onStart")
+        Log.e("AFragment", "onStart")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.e("BFragment", "onResume")
+        Log.e("AFragment", "onResume")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.e("BFragment", "onPause")
+        Log.e("AFragment", "onPause")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.e("BFragment", "onStop")
+        Log.e("AFragment", "onStop")
     }
 
     override fun onDetach() {
         super.onDetach()
-        Log.e("BFragment", "onDetach")
+        Log.e("AFragment", "onDetach")
     }
 }
