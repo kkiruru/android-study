@@ -53,7 +53,7 @@ class CustomBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun getBottomSheetDialogDefaultHeight(): Int {
-        return getWindowHeight() * 80 / 100
+        return getWindowHeight() * 100 / 100
         // 기기 높이 대비 비율 설정 부분!!
         // 위 수치는 기기 높이 대비 80%로 다이얼로그 높이를 설정
     }
